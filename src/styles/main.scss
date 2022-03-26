@@ -1,0 +1,26 @@
+@import './vuetify.scss';
+@import './mixin.scss';
+
+html, body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+div#app {
+  height: 100%;
+}
+
+.width100 {
+  width: 100%;
+}
+
+.sign-in-container {
+  width: 400px;
+  
+  @include mobile {
+    width: auto;
+  }
+}
