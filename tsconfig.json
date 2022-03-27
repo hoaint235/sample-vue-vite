@@ -20,6 +20,7 @@
       "@services": ["./src/services"],
       "@utils": ["./src/utils"],
       "@validations": ["./src/utils/constants/validation.ts"],
+      "@styles/*": ["./src/styles/*"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

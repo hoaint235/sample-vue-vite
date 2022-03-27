@@ -1,7 +1,7 @@
 @import './quasar-variables.scss';
+@import './mixin.scss';
 
-p.text-subtitle2,
-p.text-subtitle1 {
+p {
   margin-bottom: 0 !important;
 }
 
@@ -17,4 +17,17 @@ div.alert {
     color: $color-error;
     background-color: $error;
   }
+}
+
+.q-header { 
+  display: flex;
+  height: 64px;
+
+  @include mobile {
+    height: 48px;
+  }
+}
+
+.q-toolbar {
+  padding: 0 24px !important;
 }

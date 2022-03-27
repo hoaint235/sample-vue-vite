@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { Home, SignIn } from "@pages";
 import { AuthLayout } from '@layouts';
-import { userService } from "@services";
 import { routing } from "@utils";
+import { useAuth } from "@plugins";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,7 +30,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = userService.isAuthenticated();
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     if (to.fullPath !== routing.SIGN_IN) {

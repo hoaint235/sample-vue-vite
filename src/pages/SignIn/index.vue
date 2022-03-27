@@ -7,59 +7,15 @@
             <img src="../../assets/logo.png" width="48" height="48" />
           </div>
           <div class="col-12 text-center">
-            <h1 class="text-h5 font-weight-thin">
-              Vue - Firebase
-            </h1>
+            <h1 class="text-h5 font-weight-thin">Vue - Firebase</h1>
           </div>
-          <div class="col-12 q-mt-md">
-            <p class="text-subtitle2">User Name</p>
-            <q-input
-              outlined
-              v-model="userName"
-              dense
-              :rules="[isRequired, formatEmail]"
-            />
-          </div>
+
           <div class="col-12">
-            <p class="text-subtitle2">Password</p>
-            <q-input
-              v-model="password"
-              dense
-              :rules="[isRequired]"
-              outlined
-              :type="isPwd ? 'password' : 'text'"
-            >
-              <template v-slot:append>
-                <q-icon
-                  :name="isPwd ? 'visibility_off' : 'visibility'"
-                  class="cursor-pointer"
-                  @click="isPwd = !isPwd"
-                />
-              </template>
-            </q-input>
-          </div>
-          <div class="col-12" v-if="errorMessage">
-            <q-alert type="error" :message="errorMessage" />
-          </div>
-          <div class="col-12 q-mt-sm">
             <q-btn
+              flat
               color="primary"
-              label="Sign in"
               class="width100"
-              :disable="loading || !userName || !password"
-              :loading="loading"
               @click="onSignIn"
-            />
-          </div>
-
-          <q-divider />
-
-          <div class="col-12">
-            <q-btn
-              outline
-              color="primary"
-              class="width100"
-              @click="onSignInWithGoogle"
             >
               <img src="../../assets/google.svg" width="24" height="24" />
               <div class="q-ml-sm">Sign in with Google</div></q-btn
@@ -83,14 +39,15 @@
 <script lang="ts">
 import { ref, defineComponent } from "vue";
 import { userService } from "@services";
-import { QAlert, QDivider } from "@components";
+import { QAlert } from "@components";
 import { useRouter } from "vue-router";
 import { isRequired, formatEmail } from "@validations";
-import { routing } from '@utils';
+import { routing } from "@utils";
+import { useAuth } from '@plugins';
 
 export default defineComponent({
   name: "sign-in",
-  components: { QAlert, QDivider },
+  components: { QAlert },
   setup() {
     const userName = ref<string>("");
     const password = ref<string>("");
@@ -98,22 +55,11 @@ export default defineComponent({
     const isPwd = ref<boolean>(true);
     const errorMessage = ref<string>("");
     const router = useRouter();
+    const auth = useAuth();
 
     const onSignIn = async () => {
       try {
-        loading.value = true;
-        await userService.signIn(userName.value, password.value);
-        router.push(routing.HOME);
-      } catch (error: any) {
-        errorMessage.value = error.code;
-      } finally {
-        loading.value = false;
-      }
-    };
-
-    const onSignInWithGoogle = async () => {
-      try {
-        await userService.signInWithGoogle();
+        await auth.onSignIn();
         router.push(routing.HOME);
       } catch (error: any) {
         errorMessage.value = error.code;
@@ -123,11 +69,10 @@ export default defineComponent({
     return {
       userName,
       password,
-      onSignIn,
       loading,
       isPwd,
       errorMessage,
-      onSignInWithGoogle,
+      onSignIn,
       isRequired,
       formatEmail,
     };
