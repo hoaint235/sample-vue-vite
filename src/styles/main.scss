@@ -22,6 +22,6 @@ div#app {
   width: 400px;
   
   @include mobile {
-    width: auto;
+    width: 80%;
   }
 }

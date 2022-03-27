@@ -25,7 +25,9 @@ export default defineConfig({
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@layouts': path.resolve(__dirname, 'src/layouts'),
       '@plugins': path.resolve(__dirname, 'src/plugins'),
-      '@services': path.resolve(__dirname, 'src/services')
+      '@services': path.resolve(__dirname, 'src/services'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@validations': path.resolve(__dirname, 'src/utils/constants/validation.ts'),
     },
   },
   server: {

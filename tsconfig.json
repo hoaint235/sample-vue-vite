@@ -18,6 +18,8 @@
       "@layouts": ["./src/layouts"],
       "@plugins": ["./src/plugins"],
       "@services": ["./src/services"],
+      "@utils": ["./src/utils"],
+      "@validations": ["./src/utils/constants/validation.ts"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

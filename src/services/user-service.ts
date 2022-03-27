@@ -1,19 +1,26 @@
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider  } from 'firebase/auth'
-import { app } from '@plugins';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signOut,
+  signInWithPopup,
+} from "firebase/auth";
+import { app } from "@plugins";
 
 const auth = getAuth(app);
-let provider = new GoogleAuthProvider();
-provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+const provider = new GoogleAuthProvider();
 
 class UserService {
-  async signIn(userName: string, password: string) {
-    const response = await signInWithEmailAndPassword(auth, userName, password);
-    return (await response.user.getIdTokenResult()).token;
-  }
+  signIn = (userName: string, password: string) =>
+    signInWithEmailAndPassword(auth, userName, password);
 
-  isAuthenticated() {
-    return !!auth.currentUser;
-  }
+  signInWithGoogle = () => signInWithPopup(auth, provider);
+
+  getCurrentUser = () => auth.currentUser;
+
+  isAuthenticated = () => !!auth.currentUser;
+
+  signOut = () => signOut(auth);
 }
 
 export default new UserService();

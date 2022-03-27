@@ -1,19 +1,24 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { Home, SignIn } from "@pages";
+import { AuthLayout } from '@layouts';
 import { userService } from "@services";
+import { routing } from "@utils";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "home",
-    component: Home,
-
-    meta: {
-      auth: true,
-    },
+    path: routing.BASE,
+    name: "auth-layout",
+    component: AuthLayout,
+    children: [
+      {
+        path: routing.HOME,
+        name: 'home',
+        component: Home,
+      }
+    ]
   },
   {
-    path: "/sign-in",
+    path: routing.SIGN_IN,
     name: "sign-in",
     component: SignIn,
   },
@@ -28,10 +33,9 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = userService.isAuthenticated();
 
   if (!isAuthenticated) {
-    if (to.fullPath === "/sign-in") {
-      return next();
+    if (to.fullPath !== routing.SIGN_IN) {
+      return next(routing.SIGN_IN);
     }
-    return next("/sign-in");
   }
 
   return next();

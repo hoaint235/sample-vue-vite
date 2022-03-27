@@ -8,7 +8,7 @@
           </div>
           <div class="col-12 text-center">
             <h1 class="text-h5 font-weight-thin">
-              Sign In with Firebase account
+              Vue - Firebase
             </h1>
           </div>
           <div class="col-12 q-mt-md">
@@ -17,7 +17,7 @@
               outlined
               v-model="userName"
               dense
-              :rules="[(val) => (val && val.length > 0) || 'Please user name']"
+              :rules="[isRequired, formatEmail]"
             />
           </div>
           <div class="col-12">
@@ -25,7 +25,7 @@
             <q-input
               v-model="password"
               dense
-              :rules="[(val) => (val && val.length > 0) || 'Please password']"
+              :rules="[isRequired]"
               outlined
               :type="isPwd ? 'password' : 'text'"
             >
@@ -39,15 +39,31 @@
             </q-input>
           </div>
           <div class="col-12" v-if="errorMessage">
-            <q-alert type="error" :message="errorMessage"/>
+            <q-alert type="error" :message="errorMessage" />
           </div>
           <div class="col-12 q-mt-sm">
             <q-btn
-              color="primary width100"
+              color="primary"
               label="Sign in"
+              class="width100"
+              :disable="loading || !userName || !password"
               :loading="loading"
               @click="onSignIn"
             />
+          </div>
+
+          <q-divider />
+
+          <div class="col-12">
+            <q-btn
+              outline
+              color="primary"
+              class="width100"
+              @click="onSignInWithGoogle"
+            >
+              <img src="../../assets/google.svg" width="24" height="24" />
+              <div class="q-ml-sm">Sign in with Google</div></q-btn
+            >
           </div>
         </div>
       </q-card-section>
@@ -62,36 +78,45 @@
   align-items: center;
   justify-content: center;
 }
-
-
 </style>
 
 <script lang="ts">
 import { ref, defineComponent } from "vue";
 import { userService } from "@services";
-import { QAlert } from '@components';
-import { useRouter } from 'vue-router';
+import { QAlert, QDivider } from "@components";
+import { useRouter } from "vue-router";
+import { isRequired, formatEmail } from "@validations";
+import { routing } from '@utils';
 
 export default defineComponent({
   name: "sign-in",
-  components: { QAlert },
+  components: { QAlert, QDivider },
   setup() {
     const userName = ref<string>("");
     const password = ref<string>("");
     const loading = ref<boolean>(false);
     const isPwd = ref<boolean>(true);
-    const errorMessage = ref<string>('')
+    const errorMessage = ref<string>("");
     const router = useRouter();
 
     const onSignIn = async () => {
       try {
         loading.value = true;
         await userService.signIn(userName.value, password.value);
-        router.push("/home");
+        router.push(routing.HOME);
       } catch (error: any) {
         errorMessage.value = error.code;
       } finally {
         loading.value = false;
+      }
+    };
+
+    const onSignInWithGoogle = async () => {
+      try {
+        await userService.signInWithGoogle();
+        router.push(routing.HOME);
+      } catch (error: any) {
+        errorMessage.value = error.code;
       }
     };
 
@@ -101,7 +126,10 @@ export default defineComponent({
       onSignIn,
       loading,
       isPwd,
-      errorMessage
+      errorMessage,
+      onSignInWithGoogle,
+      isRequired,
+      formatEmail,
     };
   },
 });
