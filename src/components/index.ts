@@ -1,0 +1,1 @@
+export { default as QAlert } from './q-alert.vue';

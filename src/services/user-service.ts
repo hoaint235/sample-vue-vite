@@ -10,6 +10,10 @@ class UserService {
     const response = await signInWithEmailAndPassword(auth, userName, password);
     return (await response.user.getIdTokenResult()).token;
   }
+
+  isAuthenticated() {
+    return !!auth.currentUser;
+  }
 }
 
 export default new UserService();

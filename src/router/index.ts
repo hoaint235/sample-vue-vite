@@ -1,11 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import { Home, SignIn } from '@pages';
+import { Home, SignIn } from "@pages";
+import { userService } from "@services";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
     component: Home,
+
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/sign-in",
@@ -20,11 +25,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if(to.path === "/"){
-    return next('/sign-in');
+  const isAuthenticated = userService.isAuthenticated();
+
+  if (!isAuthenticated) {
+    if (to.fullPath === "/sign-in") {
+      return next();
+    }
+    return next("/sign-in");
   }
 
   return next();
-})
+});
 
 export default router;
