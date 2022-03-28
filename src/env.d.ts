@@ -9,6 +9,7 @@ declare module '*.vue' {
 
 
 interface ImportMetaEnv {
+  readonly FIRE_BASE_MESSAGING: string;
 }
 
 interface ImportMeta {

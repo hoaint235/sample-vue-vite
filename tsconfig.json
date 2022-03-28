@@ -21,6 +21,7 @@
       "@utils": ["./src/utils"],
       "@validations": ["./src/utils/constants/validation.ts"],
       "@styles/*": ["./src/styles/*"],
+      "@hooks": ["./src/hooks"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

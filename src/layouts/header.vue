@@ -14,7 +14,7 @@
               <p>
                 Hello,
               </p>
-              <p class="text-subtitle1">{{ currentUser?.displayName }}</p>
+              <p class="text-subtitle1">{{ user?.displayName }}</p>
 
             <q-btn
               color="primary"
@@ -33,7 +33,8 @@
 </template>
 
 <script lang="ts">
-import { useAuth } from "@plugins";
+import { useAuth } from "@hooks";
+import { userService } from "@services";
 import { routing } from "@utils";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
@@ -41,16 +42,16 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   name: "p-header",
   setup() {
-    const { user: currentUser, onSignOut: signOut } = useAuth();
+    const { user } = useAuth();
     const router = useRouter();
 
     const onSignOut = async () => {
-      await onSignOut();
+      await userService.signOut();
       router.push(routing.SIGN_IN)
     }
 
     return {
-      currentUser,
+      user,
       onSignOut
     };
   },

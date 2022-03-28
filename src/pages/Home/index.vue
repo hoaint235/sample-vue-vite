@@ -1,35 +1,34 @@
 <template>
-  <q-card class="q-ma-lg">
+  <q-card class="q-ma-lg" v-for="room in rooms" :key="room.id">
     <q-card-section>
-      
+      {{ room.name }}
     </q-card-section>
   </q-card>
 </template>
 
 <script lang="ts">
-import { useAuth } from "@plugins";
-import { routing } from "@utils";
-import { defineComponent } from "vue";
+import { roomService } from '@services';
+import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
-  methods: {
-    async onSignOut() {
+  setup() {
+    const rooms = ref<any>([]);
+
+    const fetchRooms = async () => {
       try {
-        await this.signOut();
-        this.$router.push(routing.SIGN_IN)
+        rooms.value = await roomService.getRooms();
+        console.log( rooms.value);
       } catch (error) {
-        this.$q.notify({
-          message: 'Sign out failed, please try again.'
-        })
+        
       }
     }
-  },
-  setup() {
-    const { user: currentUser, onSignOut: signOut } = useAuth();
-    
+
+    onMounted(() => {
+      fetchRooms();
+    });
+
     return {
-      currentUser,
-      signOut
+      rooms
     }
   }
 });

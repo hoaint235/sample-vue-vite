@@ -2,8 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { initializeAuth, browserLocalPersistence, browserPopupRedirectResolver, User, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { getAnalytics } from "firebase/analytics";
-import { initializeFirestore, getFirestore, getDocs, collection } from "firebase/firestore";
-import { computed, onUnmounted, ref } from "vue";
+import { initializeFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -36,44 +35,10 @@ const analytics = getAnalytics(app);
 
 console.log('[Firebase] Initialized');
 
-const useAuth = () => {
-  const user = ref<User | null>(null);
-  const unsubcribe = auth.onAuthStateChanged(_user => (user.value = _user));
-  onUnmounted(unsubcribe);
-
-  const isAuthenticated = computed(() => user.value !== null);
-
-  const onSignIn = async () => {
-     const googleProvider = new GoogleAuthProvider();
-     await signInWithPopup(auth, googleProvider);
-  }
-
-  const onSignOut = async () => {
-    await auth.signOut();
-  }
-
-  return {
-    user,
-    isAuthenticated,
-    onSignIn,
-    onSignOut
-  };
-}
-
-const db = getFirestore(app);
-
-const useMessages = async () => {
-  const messages = ref<string[]>([]);
-  const messagesCollection = collection(db, 'messages');
-  const messagesSnapshot = await getDocs(messagesCollection);
-  const messagesList = messagesSnapshot.docs.map(doc => doc.data());
-  return messagesList;
-}
-
 export {
   firebaseConfig as config,
   app,
   auth,
+  fireStore,
   analytics,
-  useAuth
 }
