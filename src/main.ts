@@ -1,7 +1,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { Quasar } from "@plugins";
 import "./styles/main.scss";
+import { initPrime } from '@plugins';
 
-createApp(App).use(router).use(Quasar, { plugins: {} }).mount("#app");
+const app = createApp(App);
+
+initPrime(app);
+app.use(router).mount("#app");

@@ -1,35 +1,17 @@
 <template>
-  <q-header reveal elevated class="bg-primary text-white" height-hint="98">
-    <q-toolbar>
-      <q-toolbar-title>
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-        </q-avatar>
-        Vue Firebase
-      </q-toolbar-title>
-      <q-btn flat round dense>
-        <q-icon name="more_vert" />
-        <q-menu fit max-width="300px" :style="{ width: '200px' }">
-          <div class="no-wrap q-pa-md">
-              <p>
-                Hello,
-              </p>
-              <p class="text-subtitle1">{{ user?.displayName }}</p>
-
-            <q-btn
-              color="primary"
-              label="Logout"
-              size="md"
-              v-close-popup
-              outline
-              @click="onSignOut"
-              class="width100 q-mt-md"
-            />
-          </div>
-        </q-menu>
-      </q-btn>
-    </q-toolbar>
-  </q-header>
+  <p-menubar>
+    <template #start>
+      <img
+        alt="logo"
+        src="../assets/logo.png"
+        height="40"
+        class="mx-4"
+      />
+    </template>
+    <template #end>
+      <p-button>Sign Out</p-button>
+    </template>
+  </p-menubar>
 </template>
 
 <script lang="ts">
